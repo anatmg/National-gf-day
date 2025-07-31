@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Happy National Girlfriend's Day</title>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Pacifico', cursive;
+      background-color: #ffe6f0;
+      color: #ff1493;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+      text-align: center;
+      flex-direction: column;
+    }
+
+    h1 {
+      font-size: 2.7em;
+      color: #ff69b4;
+      text-shadow: 2px 2px #fff0f5;
+      margin: 20px;
+    }
+
+    button {
+      background-color: #ffaad4;
+      border: none;
+      padding: 16px 40px;
+      border-radius: 60px;
+      font-size: 1.3em;
+      color: white;
+      font-family: 'Pacifico', cursive;
+      cursor: pointer;
+      box-shadow: 0 6px 15px rgba(255, 133, 192, 0.6);
+      transition: all 0.3s ease;
+    }
+
+    button:hover {
+      transform: scale(1.08);
+      background-color: #ff8fc0;
+    }
+
+    .hearts, canvas {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .heart {
+      position: absolute;
+      font-size: 24px;
+      animation: float 4s linear infinite;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(100vh) scale(1); opacity: 1; }
+      100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
+    }
+
+    #final img {
+      max-width: 300px;
+      border-radius: 20px;
+      box-shadow: 0 0 20px rgba(255,20,147,0.4);
+      margin-top: 20px;
+    }
+
+    audio {
+      display: none;
+    }
+
+    #content {
+      z-index: 2;
+    }
+  </style>
+</head>
+<body>
+  <audio autoplay loop>
+    <source src="https://cdn.pixabay.com/audio/2023/04/30/audio_45593e8d59.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <div id="content">
+    <h1>Happy National Girlfriend's Day 💕</h1>
+    <button onclick="goToPage(1)">Enter</button>
+  </div>
+
+  <script>
+    function goToPage(n) {
+      const c = document.getElementById('content');
+      c.innerHTML = '';
+
+      if (n === 1) {
+        c.innerHTML = `
+          <h1>Guess how much Love I have for you.. 💗</h1>
+          <button onclick="showHearts()">Show me</button>
+        `;
+      } else if (n === 2) {
+        c.innerHTML = `
+          <h1>Guess how I feel when I think of you 💖</h1>
+          <button onclick="goToPage(3)">Next</button>
+        `;
+        launchConfetti();
+      } else if (n === 3) {
+        c.innerHTML = `
+          <h1>10,560 miles away<br>but still close to my heart 💘</h1>
+          <div id="final">
+            <img src="https://i.imgur.com/V5X2V1u.png" alt="Anime couple in love">
+          </div>
+        `;
+        launchBlossoms();
+      }
+    }
+
+    function showHearts() {
+      const c = document.getElementById('content');
+      c.innerHTML = `
+        <h1>Infinite Love 💘</h1>
+        <div class="hearts" id="hearts"></div>
+        <button onclick="goToPage(2)" style="position:absolute; bottom: 40px;">Next</button>
+      `;
+
+      const hc = document.getElementById('hearts');
+      for (let i = 0; i < 300; i++) {
+        const h = document.createElement('div');
+        h.className = 'heart';
+        h.style.left = Math.random() * 100 + 'vw';
+        h.style.top = Math.random() * 100 + 'vh';
+        h.style.fontSize = (Math.random() * 20 + 10) + 'px';
+        h.style.animationDuration = (Math.random() * 3 + 2) + 's';
+        h.innerText = '💖';
+        hc.appendChild(h);
+      }
+    }
+
+    function launchConfetti() {
+      const canvas = document.createElement('canvas');
+      canvas.id = 'confetti';
+      document.body.appendChild(canvas);
+      const ctx = canvas.getContext('2d');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      const pieces = Array.from({length: 300}, () => ({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height - canvas.height,
+        r: Math.random() * 6 + 4,
+        color: `hsl(${Math.random() * 360}, 100%, 85%)`,
+        speed: Math.random() * 3 + 2
+      }));
+
+      function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        pieces.forEach(p => {
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, 2 * Math.PI);
+          ctx.fillStyle = p.color;
+          ctx.fill();
+          p.y += p.speed;
+          if (p.y > canvas.height) p.y = -10;
+        });
+        requestAnimationFrame(draw);
+      }
+
+      draw();
+    }
+
+    function launchBlossoms() {
+      const canvas = document.createElement('canvas');
+      canvas.id = 'blossoms';
+      document.body.appendChild(canvas);
+      const ctx = canvas.getContext('2d');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      const petals = Array.from({ length: 100 }, () => ({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height - canvas.height,
+        r: Math.random() * 12 + 6,
+        speedY: Math.random() * 1.5 + 1,
+        speedX: Math.random() * 1 - 0.5,
+        rotation: Math.random() * 360,
+      }));
+
+      function drawPetal(p) {
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate((p.rotation * Math.PI) / 180);
+        ctx.fillStyle = 'rgba(255,182,193,0.8)';
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.bezierCurveTo(-p.r / 2, -p.r / 2, -p.r, p.r, 0, p.r * 1.5);
+        ctx.bezierCurveTo(p.r, p.r, p.r / 2, -p.r / 2, 0, 0);
+        ctx.fill();
+        ctx.restore();
+      }
+
+      function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        petals.forEach(p => {
+          drawPetal(p);
+          p.y += p.speedY;
+          p.x += p.speedX;
+          p.rotation += 1;
+          if (p.y > canvas.height) {
+            p.y = -20;
+            p.x = Math.random() * canvas.width;
+          }
+        });
+        requestAnimationFrame(animate);
+      }
+
+      animate();
+    }
+  </script>
+</body>
+</html>
